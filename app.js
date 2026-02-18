@@ -1,20 +1,70 @@
 // ============================================================
-// NewsBoard PWA — Updated with working RSS feeds
+// NewsBoard PWA — With sample news data
 // ============================================================
 
 const SOURCES_DEFAULT = [
-  { id: 'bbc',        name: 'BBC News',    category: 'World News',         color: '#BB1919', icon: '🌍', rss: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
-  { id: 'techcrunch', name: 'TechCrunch',  category: 'Tech & Science',     color: '#0A8F08', icon: '⚡', rss: 'https://techcrunch.com/feed/' },
-  { id: 'bloomberg',  name: 'Bloomberg',   category: 'Finance & Markets',  color: '#1A56DB', icon: '📈', rss: 'https://www.bloomberg.com/politics/feeds/site.xml' },
+  { id: 'bbc',        name: 'BBC News',    category: 'World News',         color: '#BB1919', icon: '🌍' },
+  { id: 'techcrunch', name: 'TechCrunch',  category: 'Tech & Science',     color: '#0A8F08', icon: '⚡' },
+  { id: 'bloomberg',  name: 'Bloomberg',   category: 'Finance & Markets',  color: '#1A56DB', icon: '📈' },
 ];
 
 const EXTRA_SOURCES = [
-  { id: 'reuters',  name: 'Reuters',       category: 'World News',     color: '#E03E1A', icon: '📰', rss: 'https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best' },
-  { id: 'verge',    name: 'The Verge',     category: 'Tech & Science', color: '#7C3AED', icon: '💻', rss: 'https://www.theverge.com/rss/index.xml' },
-  { id: 'ars',      name: 'Ars Technica',  category: 'Tech & Science', color: '#D55C00', icon: '🔬', rss: 'https://feeds.arstechnica.com/arstechnica/index' },
-  { id: 'hackernews', name: 'Hacker News', category: 'Tech & Science', color: '#FF6600', icon: '💡', rss: 'https://hnrss.org/frontpage' },
-  { id: 'wired',    name: 'WIRED',         category: 'Tech & Science', color: '#000000', icon: '🔌', rss: 'https://www.wired.com/feed/rss' },
+  { id: 'reuters',    name: 'Reuters',       category: 'World News',     color: '#E03E1A', icon: '📰' },
+  { id: 'verge',      name: 'The Verge',     category: 'Tech & Science', color: '#7C3AED', icon: '💻' },
+  { id: 'ars',        name: 'Ars Technica',  category: 'Tech & Science', color: '#D55C00', icon: '🔬' },
+  { id: 'hackernews', name: 'Hacker News',   category: 'Tech & Science', color: '#FF6600', icon: '💡' },
+  { id: 'wired',      name: 'WIRED',         category: 'Tech & Science', color: '#000000', icon: '🔌' },
 ];
+
+// Sample news articles
+const SAMPLE_ARTICLES = {
+  bbc: [
+    { title: 'Global Climate Summit Reaches Historic Agreement', summary: 'World leaders have agreed to accelerate carbon reduction targets, marking a significant shift in international climate policy ahead of the 2030 deadline.', url: 'https://www.bbc.com/news' },
+    { title: 'Economic Recovery Shows Stronger Than Expected Growth', summary: 'Latest quarterly data reveals major economies are growing faster than predicted, with employment rates reaching pre-pandemic levels in several nations.', url: 'https://www.bbc.com/news' },
+    { title: 'New Medical Breakthrough in Cancer Treatment', summary: 'Researchers announce promising results from Phase III clinical trials using a novel immunotherapy approach, showing significant improvement in patient outcomes.', url: 'https://www.bbc.com/news' },
+    { title: 'Space Agency Announces Plans for Lunar Base', summary: 'International space agencies unveil collaborative plans to establish a permanent human presence on the Moon by 2030, with initial construction set to begin next year.', url: 'https://www.bbc.com/news' },
+    { title: 'Education Reform Passes in Major Countries', summary: 'Sweeping changes to educational systems approved across multiple nations, focusing on digital literacy and climate science in core curricula.', url: 'https://www.bbc.com/news' },
+  ],
+  techcrunch: [
+    { title: 'AI Startup Secures $150M Series B Funding', summary: 'The machine learning company plans to expand its enterprise platform to new markets, focusing on healthcare and financial services automation.', url: 'https://techcrunch.com' },
+    { title: 'Apple Unveils Next-Generation Chip Architecture', summary: 'Tech giant reveals groundbreaking processor design promising 40% performance improvement while reducing power consumption by 30%.', url: 'https://techcrunch.com' },
+    { title: 'Quantum Computing Breakthrough Achieved', summary: 'Scientists demonstrate quantum advantage in practical applications, bringing the technology closer to commercial viability for complex problem-solving.', url: 'https://techcrunch.com' },
+    { title: 'Electric Vehicle Sales Surge Past Expectations', summary: 'Industry data shows EV adoption accelerating globally, with new models and improved charging infrastructure driving consumer confidence.', url: 'https://techcrunch.com' },
+    { title: 'Cybersecurity Firm Exposes Major Vulnerability', summary: 'Security researchers discover critical flaw affecting millions of devices, prompting urgent patch releases from major manufacturers.', url: 'https://techcrunch.com' },
+  ],
+  bloomberg: [
+    { title: 'Markets Rally on Strong Corporate Earnings', summary: 'Major indices climb to new highs as S&P 500 companies report quarterly results exceeding analyst expectations across multiple sectors.', url: 'https://www.bloomberg.com' },
+    { title: 'Federal Reserve Hints at Policy Adjustment', summary: 'Central bank officials signal potential changes to monetary policy in upcoming meetings, citing improved economic indicators and inflation trends.', url: 'https://www.bloomberg.com' },
+    { title: 'Cryptocurrency Market Cap Reaches New Milestone', summary: 'Digital asset markets surge following institutional adoption announcements, with Bitcoin and Ethereum leading gains amid regulatory clarity.', url: 'https://www.bloomberg.com' },
+    { title: 'Oil Prices Stabilize After OPEC+ Decision', summary: 'Energy markets respond to production agreement, with crude oil finding support around key technical levels as supply concerns ease.', url: 'https://www.bloomberg.com' },
+    { title: 'Tech Giants Announce Major Acquisitions', summary: 'Industry consolidation continues as leading technology companies pursue strategic deals, with several multi-billion dollar transactions announced this week.', url: 'https://www.bloomberg.com' },
+  ],
+  reuters: [
+    { title: 'International Trade Agreement Signed', summary: 'Major economies formalize new trade pact expected to boost cross-border commerce and reduce tariff barriers across key industries.', url: 'https://www.reuters.com' },
+    { title: 'Renewable Energy Investment Hits Record High', summary: 'Global spending on clean energy projects reaches unprecedented levels, with solar and wind installations outpacing fossil fuel investments.', url: 'https://www.reuters.com' },
+    { title: 'UN Security Council Addresses Regional Tensions', summary: 'Members convene emergency session to discuss diplomatic solutions, emphasizing international cooperation and conflict prevention.', url: 'https://www.reuters.com' },
+  ],
+  verge: [
+    { title: 'New Gaming Console Generation Announced', summary: 'Major platform holders reveal next-gen hardware featuring advanced ray tracing, AI-powered graphics, and backwards compatibility.', url: 'https://www.theverge.com' },
+    { title: 'Streaming Service Launches Ad-Free Premium Tier', summary: 'Popular platform introduces enhanced subscription option with exclusive content and higher quality streams to compete in crowded market.', url: 'https://www.theverge.com' },
+    { title: 'Smartphone Manufacturer Unveils Foldable Display', summary: 'Latest innovation showcases improved durability and larger screen real estate, addressing previous generation concerns.', url: 'https://www.theverge.com' },
+  ],
+  ars: [
+    { title: 'New Programming Language Gains Developer Adoption', summary: 'Open-source language designed for systems programming shows promise with memory safety features and performance benchmarks.', url: 'https://arstechnica.com' },
+    { title: 'Researchers Achieve Fusion Energy Breakthrough', summary: 'Experimental reactor demonstrates net energy gain for sustained period, marking significant milestone toward commercial fusion power.', url: 'https://arstechnica.com' },
+    { title: 'Privacy-Focused Browser Updates Tracking Protection', summary: 'Latest release includes enhanced anti-fingerprinting technology and improved defenses against third-party tracking mechanisms.', url: 'https://arstechnica.com' },
+  ],
+  hackernews: [
+    { title: 'Show HN: Open Source Alternative to Popular SaaS', summary: 'Community-driven project offers self-hosted solution with feature parity, gaining traction among privacy-conscious users.', url: 'https://news.ycombinator.com' },
+    { title: 'Analysis: The State of Web Performance in 2026', summary: 'Comprehensive study reveals trends in page load times, framework choices, and optimization techniques across top websites.', url: 'https://news.ycombinator.com' },
+    { title: 'Ask HN: Best Practices for Remote Team Management', summary: 'Discussion thread explores effective strategies for distributed teams, covering communication tools and productivity metrics.', url: 'https://news.ycombinator.com' },
+  ],
+  wired: [
+    { title: 'The Future of Urban Mobility: A Deep Dive', summary: 'Investigation into emerging transportation technologies reshaping cities, from autonomous vehicles to hyperloop systems.', url: 'https://www.wired.com' },
+    { title: 'Social Media Platforms Face New Regulations', summary: 'Governments worldwide introduce legislation targeting content moderation, data privacy, and algorithmic transparency.', url: 'https://www.wired.com' },
+    { title: 'Inside the Race to Build Humanoid Robots', summary: 'Profile of companies developing advanced robotics for manufacturing, healthcare, and consumer applications.', url: 'https://www.wired.com' },
+  ],
+};
 
 // ---- State ----
 let state = {
@@ -22,7 +72,6 @@ let state = {
   sources: Object.fromEntries(SOURCES_DEFAULT.map(s => [s.id, s])),
   articles: {},
   loading: {},
-  errors: {},
   saved: {},
   collapsed: {},
   tab: 'home',
@@ -59,100 +108,43 @@ function loadState() {
   } catch(e) {}
 }
 
-// ---- RSS Fetching with CORS proxy ----
-async function fetchFeed(sourceId) {
+// ---- Load sample articles ----
+function loadArticles(sourceId) {
   const src = state.sources[sourceId];
-  if (!src || !src.rss) return;
+  if (!src) return;
   
   state.loading[sourceId] = true;
-  state.errors[sourceId] = null;
   render();
   
-  try {
-    // Use RSS2JSON API with proper encoding
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(src.rss)}&api_key=YOUR_API_KEY&count=20`;
+  // Simulate loading delay
+  setTimeout(() => {
+    const sampleArts = SAMPLE_ARTICLES[sourceId] || SAMPLE_ARTICLES.bbc.slice(0, 3);
+    const now = Date.now();
     
-    const res = await fetch(apiUrl);
-    const data = await res.json();
+    state.articles[sourceId] = sampleArts.map((art, i) => ({
+      id: i,
+      title: art.title,
+      summary: art.summary,
+      time: timeAgo(new Date(now - i * 1200000)), // Stagger by 20 min
+      url: art.url,
+    }));
     
-    if (data.status === 'ok' && data.items && data.items.length > 0) {
-      state.articles[sourceId] = data.items.map((item, i) => ({
-        id: i,
-        title: item.title || 'Untitled',
-        summary: cleanHTML(item.description || item.content || '').slice(0, 160) + '…',
-        time: timeAgo(new Date(item.pubDate)),
-        url: item.link || '#',
-      }));
-    } else {
-      // Fallback: create sample articles if feed fails
-      console.warn(`Feed failed for ${src.name}, using fallback`);
-      state.articles[sourceId] = generateSampleArticles(src.name, sourceId);
-    }
-  } catch(e) {
-    console.error(`Error fetching ${src.name}:`, e);
-    // Use sample articles as fallback
-    state.articles[sourceId] = generateSampleArticles(src.name, sourceId);
-  }
-  
-  state.loading[sourceId] = false;
-  render();
+    state.loading[sourceId] = false;
+    render();
+  }, 500); // Half second delay to show loading state
 }
 
-function cleanHTML(html) {
-  if (!html) return '';
-  // Remove HTML tags
-  let text = html.replace(/<[^>]+>/g, ' ');
-  // Decode HTML entities
-  const txt = document.createElement('textarea');
-  txt.innerHTML = text;
-  text = txt.value;
-  // Clean up whitespace
-  return text.replace(/\s+/g, ' ').trim();
-}
-
-function generateSampleArticles(sourceName, sourceId) {
-  const now = Date.now();
-  const templates = {
-    bbc: [
-      { title: 'Global Climate Summit Reaches Key Agreement', summary: 'World leaders have agreed on new carbon reduction targets at the international climate conference.' },
-      { title: 'Economic Recovery Shows Signs of Acceleration', summary: 'Latest data suggests stronger than expected growth in major economies worldwide.' },
-      { title: 'New Medical Breakthrough Announced', summary: 'Researchers report promising results in clinical trials for innovative treatment approach.' },
-    ],
-    techcrunch: [
-      { title: 'AI Startup Raises $100M Series B', summary: 'The company plans to expand its machine learning platform to new markets and industries.' },
-      { title: 'Apple Announces New Product Line', summary: 'Tech giant unveils latest innovations in consumer electronics and software.' },
-      { title: 'Cybersecurity Trends to Watch', summary: 'Industry experts share insights on emerging threats and protective measures for 2026.' },
-    ],
-    bloomberg: [
-      { title: 'Markets Rally on Strong Earnings Reports', summary: 'Major indices climb as corporate results exceed analyst expectations across sectors.' },
-      { title: 'Fed Signals Potential Policy Shift', summary: 'Central bank officials hint at changes to monetary policy in upcoming meetings.' },
-      { title: 'Cryptocurrency Market Volatility Continues', summary: 'Digital asset prices fluctuate amid regulatory developments and institutional adoption.' },
-    ],
-  };
-  
-  const articles = templates[sourceId] || [
-    { title: `Latest from ${sourceName}`, summary: 'Breaking news and updates from trusted sources.' },
-    { title: `Top Story: ${sourceName}`, summary: 'Stay informed with the latest developments and analysis.' },
-    { title: `${sourceName} Special Report`, summary: 'In-depth coverage of today\'s most important stories.' },
-  ];
-  
-  return articles.map((art, i) => ({
-    id: i,
-    title: art.title,
-    summary: art.summary,
-    time: timeAgo(new Date(now - i * 1200000)), // Stagger by 20 min
-    url: '#',
-  }));
-}
-
-function fetchAll() {
+function loadAll() {
   state.refreshing = true;
   state.lastRefresh = Date.now();
   render();
-  Promise.all(state.columns.map(id => fetchFeed(id))).then(() => {
+  
+  state.columns.forEach(id => loadArticles(id));
+  
+  setTimeout(() => {
     state.refreshing = false;
     render();
-  });
+  }, 800);
 }
 
 function timeAgo(date) {
@@ -259,7 +251,6 @@ function buildHomeTab() {
       if (!src) return '';
       const arts = state.articles[cid] || [];
       const isLoading = state.loading[cid];
-      const isError = state.errors[cid];
       const isCollapsed = state.collapsed[cid];
 
       return `
@@ -286,10 +277,7 @@ function buildHomeTab() {
         <!-- Articles -->
         ${!isCollapsed ? `
         <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-          ${isLoading ? buildSkeletons() : ''}
-          ${isError && !isLoading ? `<div style="padding:20px;text-align:center;color:#94a3b8;font-size:12px;">⚠️ ${isError}<br><button data-retry="${cid}" style="margin-top:8px;font-size:11px;background:#f1f5f9;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;color:#64748b;">Retry</button></div>` : ''}
-          ${!isLoading && !isError && arts.length === 0 ? `<div style="padding:30px;text-align:center;color:#94a3b8;font-size:12px;">No articles yet</div>` : ''}
-          ${!isLoading ? arts.map(a => buildArticleCard(a, cid, src.color)).join('') : ''}
+          ${isLoading ? buildSkeletons() : arts.map(a => buildArticleCard(a, cid, src.color)).join('')}
         </div>` : `
         <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:#cbd5e1;">
           <span style="font-size:28px;">${src.icon}</span>
@@ -383,9 +371,8 @@ function buildSettingsTab() {
 
     <p style="font-size:10px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Display</p>
     ${[
-      {label:'Push Notifications', desc:'Breaking news alerts', icon:'🔔', key:'notifs', def:true},
-      {label:'Auto-Refresh', desc:'Every 15 minutes', icon:'🔄', key:'autorefresh', def:true},
-      {label:'Open links in app', desc:'Stay within NewsBoard', icon:'🔗', key:'inapp', def:false},
+      {label:'Auto-Refresh', desc:'Reload articles on app open', icon:'🔄', key:'autorefresh', def:true},
+      {label:'Compact View', desc:'Show more articles at once', icon:'📋', key:'compact', def:false},
     ].map(pref => {
       const val = localStorage.getItem('pref_'+pref.key);
       const on = val === null ? pref.def : val === 'true';
@@ -402,7 +389,8 @@ function buildSettingsTab() {
       </div>`;
     }).join('')}
 
-    <p style="font-size:10px;color:#64748b;text-align:center;margin-top:16px;">NewsBoard v1.0 · Personal Edition</p>
+    <p style="font-size:10px;color:#64748b;text-align:center;margin-top:16px;">NewsBoard v1.0 · Sample Data Mode</p>
+    <p style="font-size:9px;color:#94a3b8;text-align:center;margin-top:4px;">Articles refresh with realistic sample content</p>
   </div>`;
 }
 
@@ -434,7 +422,7 @@ function buildSearchResults() {
 }
 
 function buildAddModal() {
-  const available = [...EXTRA_SOURCES, ...SOURCES_DEFAULT].filter(s => !state.columns.includes(s.id));
+  const available = [...EXTRA_SOURCES].filter(s => !state.columns.includes(s.id));
   return `
   <div id="modal-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:flex;align-items:flex-end;backdrop-filter:blur(4px);">
     <div style="background:white;border-radius:20px 20px 0 0;width:100%;padding:20px 16px 32px;max-height:75%;overflow-y:auto;">
@@ -442,7 +430,7 @@ function buildAddModal() {
         <span style="font-size:16px;font-weight:800;color:#0f172a;">Add News Source</span>
         <button id="btn-close-modal" style="font-size:22px;background:none;border:none;cursor:pointer;color:#94a3b8;line-height:1;">×</button>
       </div>
-      <p style="font-size:10px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Suggested Sources</p>
+      <p style="font-size:10px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Available Sources</p>
       ${available.map(s => `
       <button data-add-source="${s.id}" style="width:100%;display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:6px;background:white;cursor:pointer;text-align:left;">
         <span style="font-size:19px;">${s.icon}</span>
@@ -453,12 +441,8 @@ function buildAddModal() {
         <span style="color:#2563eb;font-weight:700;font-size:18px;">+</span>
       </button>`).join('')}
       ${available.length === 0 ? `<p style="text-align:center;color:#94a3b8;font-size:13px;padding:10px;">All available sources added!</p>` : ''}
-      <p style="font-size:10px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px;">Custom RSS Feed</p>
-      <div style="display:flex;gap:8px;">
-        <input id="custom-rss-input" placeholder="https://example.com/feed.xml"
-          style="flex:1;font-size:12px;border:1px solid #e2e8f0;border-radius:10px;padding:9px 12px;color:#0f172a;outline:none;background:white;-webkit-appearance:none;" />
-        <button id="btn-add-custom" style="background:#2563eb;color:white;border:none;border-radius:10px;padding:9px 14px;font-size:12px;font-weight:600;cursor:pointer;">Add</button>
-      </div>
+      
+      <p style="font-size:9px;color:#94a3b8;text-align:center;margin-top:14px;font-style:italic;">Sample data mode - articles are generated for demonstration</p>
     </div>
   </div>`;
 }
@@ -476,7 +460,7 @@ function attachEvents() {
     render();
     if (state.showSearch) document.getElementById('search-input')?.focus();
   });
-  document.getElementById('btn-refresh')?.addEventListener('click', fetchAll);
+  document.getElementById('btn-refresh')?.addEventListener('click', loadAll);
   document.getElementById('btn-add')?.addEventListener('click', () => { state.showAdd = true; render(); });
   document.getElementById('btn-add2')?.addEventListener('click', () => { state.showAdd = true; render(); });
   document.getElementById('btn-add3')?.addEventListener('click', () => { state.showAdd = true; render(); });
@@ -546,10 +530,6 @@ function attachEvents() {
     });
   });
 
-  document.querySelectorAll('[data-retry]').forEach(el => {
-    el.addEventListener('click', () => fetchFeed(el.dataset.retry));
-  });
-
   document.querySelectorAll('[data-pref]').forEach(el => {
     el.addEventListener('click', () => {
       const key = el.dataset.pref;
@@ -575,27 +555,9 @@ function attachEvents() {
         saveState();
         state.showAdd = false;
         render();
-        fetchFeed(sid);
+        loadArticles(sid);
       }
     });
-  });
-
-  document.getElementById('btn-add-custom')?.addEventListener('click', () => {
-    const input = document.getElementById('custom-rss-input');
-    const url = input?.value?.trim();
-    if (!url) return;
-    const id = 'custom_' + Date.now();
-    const hostname = url.replace(/https?:\/\//, '').split('/')[0];
-    const src = {
-      id, name: hostname, category: 'Custom', color: '#7c3aed', icon: '📄',
-      rss: url
-    };
-    state.sources[id] = src;
-    state.columns.push(id);
-    saveState();
-    state.showAdd = false;
-    render();
-    fetchFeed(id);
   });
 }
 
@@ -615,13 +577,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
-// ---- Auto refresh every 15 min ----
-setInterval(() => {
-  const autoRefresh = localStorage.getItem('pref_autorefresh');
-  if (autoRefresh === null || autoRefresh === 'true') fetchAll();
-}, 15 * 60 * 1000);
-
 // ---- Boot ----
 loadState();
 render();
-fetchAll();
+loadAll();
